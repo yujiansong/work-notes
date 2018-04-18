@@ -14,3 +14,4 @@ exclusive lock 排他锁     写锁  write lock
 
 #1.一般是权限问题 参考:https://www.cnblogs.com/bushe/p/5647767.html
 #或者使用 navicat 用户->admin@%->编辑用户->服务器权限(进行编辑)->权限(使用的数据库进行编辑)->保存  最后刷新权限(flush privileges)
+
