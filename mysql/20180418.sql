@@ -14,7 +14,7 @@ read committed 提交读 一个事务从开始到提交之前，所做的任何修改对其他事务都是不可
 repeatable read 可重复读 保证了在同一个事务中，多次读取同样的记录结果是一致的，但是无法解决幻读phantom read的问题
 #幻读 当某个事物读取某个范围内的记录时，另外一个事务又在该范围内插入了新的记录，当之前的事务再次读取该范围内的记录时，会产生换行phantom row
  innodb 和 xtradb 存储引擎通过多版本并发控制MVCC (Multiversion concurrency control)解决了幻读的问题
-提交读是mysql默认的事务隔离级别
+可重复读是mysql默认的事务隔离级别
 serializable 可串行化 最高的隔离级别 通过强制事务串行执行，避免的幻读问题 serializable会在读取的每一行数据上都加锁，会导致大量的超时和锁争用的问题 实际很少使用这个隔离级别 只有在非常需要确保数据的一致性而且可以接受没有并发的情况下，才考虑使用该级别
 #查看mysql的事务隔离级别
 mysql> select @@tx_isolation;
@@ -52,3 +52,40 @@ set session transaction isolation level
 死锁的产生有双重原因:有些事因为真正的数据冲突， 有些则完全是存储引擎的实现方式导致的
 死锁发生后，只有部分或者完全回滚一个事务，才能打破死锁，对于事务型的系统，这是无法避免的。
 大多数情况下，只需要重新执行因死锁回滚的事务即可。
+
+######事务日志
+mysql 提供了两种事务型的存储引擎 InnoDB 和 NDB Cluster
+
+AUTOCOMMIT 自动提交
+mysql默认采用自动提交模式。如果不是现实的开始一个事务，则每个查询都会被当做一个事务执行提交操作。
+mysql> show variables like 'autocommit';
++---------------+-------+
+| Variable_name | Value |
++---------------+-------+
+| autocommit    | ON    |
++---------------+-------+
+1 row in set (0.03 sec)
+
+开启自动提交
+mysql> set autocommit = 1;
+Query OK, 0 rows affected (0.00 sec)
+
+关闭自动提交
+mysql> set autocommit = 0;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> show variables like 'autocommit';
++---------------+-------+
+| Variable_name | Value |
++---------------+-------+
+| autocommit    | OFF   |
++---------------+-------+
+1 row in set (0.01 sec)
+
+设置隔离级别
+mysql> set transaction isolation level read committed;
+Query OK, 0 rows affected (0.01 sec)
+
+在同一个事务中，使用多种存储引擎是不可靠的： 如果在事务中混合使用了事务型和非事务型的表如 InnoDB 和 MyIsAM,正常提交的情况下不会有什么问题。
+但如果该事物需要回滚，非事务型的表上的变更就无法撤销
+
