@@ -14,7 +14,7 @@ read committed 提交读 一个事务从开始到提交之前，所做的任何修改对其他事务都是不可
 repeatable read 可重复读 保证了在同一个事务中，多次读取同样的记录结果是一致的，但是无法解决幻读phantom read的问题
 #幻读 当某个事物读取某个范围内的记录时，另外一个事务又在该范围内插入了新的记录，当之前的事务再次读取该范围内的记录时，会产生换行phantom row
  innodb 和 xtradb 存储引擎通过多版本并发控制MVCC (Multiversion concurrency control)解决了幻读的问题
-可重复读是mysql默认的事务隔离级别
+提交读是mysql默认的事务隔离级别
 serializable 可串行化 最高的隔离级别 通过强制事务串行执行，避免的幻读问题 serializable会在读取的每一行数据上都加锁，会导致大量的超时和锁争用的问题 实际很少使用这个隔离级别 只有在非常需要确保数据的一致性而且可以接受没有并发的情况下，才考虑使用该级别
 #查看mysql的事务隔离级别
 mysql> select @@tx_isolation;
@@ -27,3 +27,28 @@ mysql> select @@tx_isolation;
 
 #设置mysql的事务隔离级别
 set session transaction isolation level
+
+#死锁 是指两个事务或者多个事务在同一个资源上相互占用，并请求锁定对方占用的资源，从而导致恶性循环的现象。
+ 当多个事务试图以不同的顺序锁定资源时，就可能会产生死锁
+ 多个事务同时锁定同一个资源时，也会产生死锁。
+ 
+ start transaction;
+ update StockPrice set close = 45.50 where stock_id = 4 and date = '2018-04-18';
+ update StockPrice set close = 19.80 where stock_id = 3 and date = '2018-04-19';
+ commit;
+ 
+ start transaction;
+ update StockPrice set close = 20.12 where stock_id = 3 and date = '2018-04-19';
+ update StockPrice set close = 19.80 where stock_id = 4 and date = '2018-04-18';
+ commit;
+ 
+ 如果凑巧，两个事务都执行了第一条update语句，更新了一行数据，同时也锁定了该行数据，接着每个事务都尝试去执行第二条update语句，
+ 却发现改行已被对方锁定，然后两个事务都等待对方释放锁，同时有持有对方需要的锁，则陷入死循环。
+ 解决方式： 死锁检测和死锁超时机制
+	越复杂的系统，越能检测到死锁的循环依赖 比如Innodb存数引擎 立即返回一个错误 这种解决方式很有效，否则死锁会导致非常慢的查询
+	当查询时间达到锁等待超时的设定后放弃锁请求(这种方式不推荐)
+	InnoDB目前处理死锁的办法: 将持有最少行级排他锁的事务进行回滚 这是相对比较简单的死锁回滚算法
+
+死锁的产生有双重原因:有些事因为真正的数据冲突， 有些则完全是存储引擎的实现方式导致的
+死锁发生后，只有部分或者完全回滚一个事务，才能打破死锁，对于事务型的系统，这是无法避免的。
+大多数情况下，只需要重新执行因死锁回滚的事务即可。
