@@ -51,3 +51,8 @@ Max_data_length: 0                     #表数据的最大容量
         Comment: 诊所工作人员基本信息表#创建时的注释信息
 1 row in set (0.00 sec)
 
+######InnoDB存储引擎
+InnoDB采用MVCC来支持高并发，并且实现了四个标准的隔离级别，其默认级别是 REPEATABLE READ 可重复读，并且通过间隙锁策略 next-key locking 来防止幻读的出现。
+间隙锁使得InnoDB不仅仅锁定查询涉及的行，还会对索引中的间隙进行锁定，以防止幻影行的插入。
+InnoDB是基于聚簇索引建立的, 聚簇索引对主键查询有很高的性能
+ 
