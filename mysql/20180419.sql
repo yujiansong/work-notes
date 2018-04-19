@@ -25,3 +25,29 @@ InnoDB为插入的一个新纪录，保存当前系统版本号为行版本号�
 保存这两个额外的系统版本号，使大多数的读操作都可以不用加锁。不足之处就是每行记录都需要额外的存储空间，需要做更多的行检查工作，以及一些额外的维护工作。
 
 MVCC 只在REPEATABLE READ 和 READ COMMITTED 两个级别下工作。其它两个隔离级别都和MVCC不兼容，因为 READ UNCOMMITTED总是读取最新的行，而不是符合当前事务版本的数据行。而SERIALIZABLE 则会对所有读取的行都加锁。
+
+######MySQL的存储引擎
+显示表的相关信息
+
+mysql> show table status like 'ss_staff' \G;  
+*************************** 1. row ***************************
+           Name: ss_staff              #表名
+         Engine: InnoDB                #表的存储引擎类型
+        Version: 10
+     Row_format: Dynamic               #行的格式  Dynamic:行的长度是可变的 Fixed固定的
+           Rows: 116                   #表中的行数  MyIsAM是精确的 对于InnoDB该值是估值
+ Avg_row_length: 423                   #平均每行包含的字节数
+    Data_length: 49152                 #表数据的大小(以字节为单位)
+Max_data_length: 0                     #表数据的最大容量
+   Index_length: 32768                 #索引的大小(以字节为单位)
+      Data_free: 0                     #对于MyISAM表，表示已分配但是目前没有使用的空间。这部分空间包括了之前删除的行，以及后续可以被insert利用到的空间
+ Auto_increment: 174                   #下一个 AUTO_INCREMENT的值
+    Create_time: 2018-02-08 16:49:13   #表的创建时间
+    Update_time: 2018-04-19 11:48:55   #表数据的最后修改时间
+     Check_time: NULL                  #使用check table 命令或者myisamchk工具最后一次检查表的时间
+      Collation: utf8mb4_general_ci    #表的默认字符集和字符列排序规则
+       Checksum: NULL                  #如果启用，保存的是整个表的实时校验和
+ Create_options:                       #创建表时指定的其它选项
+        Comment: 诊所工作人员基本信息表#创建时的注释信息
+1 row in set (0.00 sec)
+
