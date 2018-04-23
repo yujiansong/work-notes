@@ -142,4 +142,15 @@ mysql> insert into innodb_ss_test select * from ss_test;
 Query OK, 34 rows affected (0.06 sec)
 Records: 34  Duplicates: 0  Warnings: 0
 
+如果数据量不大的话，这样做可以，如果数据量很大，可以考虑分批处理，针对每一段数据执行事务提交操作，以避免大事务产生过多的undo.假设有主键字段id,重复运行以下语句(最小值x,和最大值y进行相应的替换)将数据导入到新表:
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into innodb_ss_test select * from ss_test where id between 1 and 30;
+Query OK, 21 rows affected (0.01 sec)
+Records: 21  Duplicates: 0  Warnings: 0
+
+mysql> insert into innodb_ss_test select * from ss_test where id between 31 and 60;
+Query OK, 13 rows affected (0.02 sec)
+Records: 13  Duplicates: 0  Warnings: 0
 
