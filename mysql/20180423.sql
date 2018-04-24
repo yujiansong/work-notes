@@ -154,3 +154,7 @@ mysql> insert into innodb_ss_test select * from ss_test where id between 31 and 
 Query OK, 13 rows affected (0.02 sec)
 Records: 13  Duplicates: 0  Warnings: 0
 
+######MySQL基准测试
+benchmark 基准测试是针对系统设计的一种压力测试
+1.为什么需要基准测试: 因为基准测试是唯一方便有效的，可以学习系统在给定的工作负载下会发生什么的方法。基准测试可以观察系统在不同压力下的行为，评估系统的容量，掌握哪些是重要的变化，或者观察系统如何处理不同的数据。基准测试可以在系统实际负载之外创造出一些虚拟场景进行测试。
+
