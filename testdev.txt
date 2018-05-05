@@ -1,7 +1,7 @@
 Git is a distributed version control system.
 Git is free software.
-2
+3
 #版本1
 #版本2
-#版本3
+#版本3.0
 wanglaoer is laoerpang
