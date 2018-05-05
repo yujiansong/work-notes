@@ -4,4 +4,6 @@ Git is free software.
 #版本1
 #版本2
 #版本3.0
+#fixbug 3.1
+hello,world.
 wanglaoer is laoerpang
