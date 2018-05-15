@@ -1,0 +1,23 @@
+服务端在执行时中途关闭浏览器退出之后php还会继续执行吗?
+
+
+#1. ingore_user_abort 函数应用
+定义和用法
+ignore_user_abort() 函数设置与客户机断开是否会终止脚本的执行。
+
+本函数返回 user-abort 设置的之前的值（一个布尔值）。
+语法: ignore_user_abort(setting)
+setting	
+可选。如果设置为 true，则忽略与用户的断开，如果设置为 false，会导致脚本停止运行。
+
+如果未设置该参数，会返回当前的设置。
+提示和注释
+注释：PHP 不会检测到用户是否已断开连接，直到尝试向客户机发送信息为止。简单地使用 echo 语句无法确保信息发送，参阅 flush() 函数。
+
+<?php
+ignore_user_abort();
+?>
+
+resource: 
+http://www.04007.cn/article/356.html
+http://www.cnblogs.com/yjf512/p/5362025.html?foxhandler=RssReadRenderProcessHandler
