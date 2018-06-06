@@ -1,0 +1,61 @@
+
+#1.查询系统当前 .php 文件在1天之内所修改的且 大于 50k 的
+第一种方法
+[root@localhost tmp]# find / -type f -name '*.php' -size +50k -mtime 0 -exec ls -lh '{}' ';'
+-rw-r--r-- 1 root root 51K 6月   4 12:11 /data/wwwroot/somshu/extend/core/logic/orthdontics/CaseLogic.php
+-rw-r--r-- 1 root root 64K 6月   4 10:59 /data/wwwroot/somshu/clinic/orthdontics/service/CaseInfo.php
+-rw-r--r-- 1 root root 72K 6月   4 18:31 /data/wwwroot/somshu/admin/admin/controller/Telemarket.php
+第二种方法
+[root@localhost tmp]# find / -type f -name '*.php' -size +50k -mtime -1 -exec ls -lh '{}' ';'
+-rw-r--r-- 1 root root 51K 6月   4 12:11 /data/wwwroot/somshu/extend/core/logic/orthdontics/CaseLogic.php
+-rw-r--r-- 1 root root 64K 6月   4 10:59 /data/wwwroot/somshu/clinic/orthdontics/service/CaseInfo.php
+-rw-r--r-- 1 root root 72K 6月   4 18:31 /data/wwwroot/somshu/admin/admin/controller/Telemarket.php
+第三种方法
+[root@localhost tmp]# find / -type f -name '*.php' -size +50k -mtime 0 -exec ls -lh '{}' +
+-rw-r--r-- 1 root root 72K 6月   4 18:31 /data/wwwroot/somshu/admin/admin/controller/Telemarket.php
+-rw-r--r-- 1 root root 64K 6月   4 10:59 /data/wwwroot/somshu/clinic/orthdontics/service/CaseInfo.php
+-rw-r--r-- 1 root root 51K 6月   4 12:11 /data/wwwroot/somshu/extend/core/logic/orthdontics/CaseLogic.php
+第四种方法
+[root@localhost tmp]# find / -type f -name '*.php' -size +50k -mtime -1 -exec ls -lh '{}' +
+-rw-r--r-- 1 root root 72K 6月   4 18:31 /data/wwwroot/somshu/admin/admin/controller/Telemarket.php
+-rw-r--r-- 1 root root 64K 6月   4 10:59 /data/wwwroot/somshu/clinic/orthdontics/service/CaseInfo.php
+-rw-r--r-- 1 root root 51K 6月   4 12:11 /data/wwwroot/somshu/extend/core/logic/orthdontics/CaseLogic.php
+第五种方法
+[root@localhost tmp]# find / -type f -name '*.php' -size +50k -mtime 0 | xargs ls -lh
+-rw-r--r-- 1 root root 72K 6月   4 18:31 /data/wwwroot/somshu/admin/admin/controller/Telemarket.php
+-rw-r--r-- 1 root root 64K 6月   4 10:59 /data/wwwroot/somshu/clinic/orthdontics/service/CaseInfo.php
+-rw-r--r-- 1 root root 51K 6月   4 12:11 /data/wwwroot/somshu/extend/core/logic/orthdontics/CaseLogic.php
+第六种方法
+[root@localhost tmp]# find / -type f -name '*.php' -size +50k -mtime -1 | xargs ls -lh
+-rw-r--r-- 1 root root 72K 6月   4 18:31 /data/wwwroot/somshu/admin/admin/controller/Telemarket.php
+-rw-r--r-- 1 root root 64K 6月   4 10:59 /data/wwwroot/somshu/clinic/orthdontics/service/CaseInfo.php
+-rw-r--r-- 1 root root 51K 6月   4 12:11 /data/wwwroot/somshu/extend/core/logic/orthdontics/CaseLogic.php
+
+#1.查询系统当前 .php 文件在5天之前(不包含5天本身)所修改的且 大于 50k 的
+[root@localhost tmp]# find / -type f -name '*.php' -size +50k -mtime +5 -exec ls -lh '{}' ';'
+
+#1.查询系统当前 .php 文件在5天之内(包含5天本身)所修改的且 大于 50k 的
+[root@localhost tmp]# find / -type f -name '*.php' -size +50k -mtime -5 -exec ls -lh '{}' ';'
+-rw-r--r-- 1 root root 57K 5月  31 15:43 /tmp/git_test/clinic/orthdontics/service/CaseInfo.php
+-rw-r--r-- 1 root root 96K 5月  31 15:43 /tmp/git_test/clinic/reservation/model/ReservationToday.php
+-rw-r--r-- 1 root root 51K 6月   5 09:19 /data/wwwroot/somshu/extend/core/logic/orthdontics/CaseLogic.php
+-rw-rw-r-- 1 root root 98K 5月  31 09:33 /data/wwwroot/somshu/clinic/reservation/model/ReservationToday.php
+-rw-r--r-- 1 root root 64K 6月   5 09:19 /data/wwwroot/somshu/clinic/orthdontics/service/CaseInfo.php
+-rw-r--r-- 1 root root 73K 5月  31 11:33 /data/wwwroot/somshu/admin/admin/service/Telemarket.php
+
+#1.查询系统当前 .php文件在1天之内， 所修改的文件 包括40k 和 50k+以上的文件)
+[root@localhost tmp]# find / -type f -name '*.php' -a -mtime 0 -a \( -size 40k -o -size +50k \) -exec ls -lh '{}' ';'
+-rw-r--r-- 1 root root 51K 6月   5 09:19 /data/wwwroot/somshu/extend/core/logic/orthdontics/CaseLogic.php
+-rw-r--r-- 1 root root 64K 6月   5 09:19 /data/wwwroot/somshu/clinic/orthdontics/service/CaseInfo.php
+-rw-r--r-- 1 root root 72K 6月   5 09:37 /data/wwwroot/somshu/admin/admin/controller/Telemarket.php
+-rw-r--r-- 1 www www 40K 6月   4 16:20 /data/wwwroot/onebase/runtime/cache/7a/97a35160987a8f39536d2c5ee90e09.php
+
+#1.查询系统当前 .php文件在1天之内， 所修改的.php文件且文件名包含 CaseInfo.php 包括40k 和 50k+以上的文件)
+[root@localhost tmp]# find / -type f -name '*.php' -a \( -name '*CaseInfo.php' \) -mtime 0 -a \( -size 40k -o -size +50k \) -exec ls -lh '{}' ';' 
+-rw-r--r-- 1 root root 64K 6月   5 09:19 /data/wwwroot/somshu/clinic/orthdontics/service/CaseInfo.php
+
+#1.查询系统当前 .php文件在1天之内， 所修改的.php 文件且文件名不包含 CaseInfo.php 包括40k 和 50k+以上的文件
+[root@localhost tmp]#  find / -type f -name '*.php' -a \( ! -name '*CaseInfo.php' \) -mtime 0 -a \( -size 40k -o -size +50k \) -exec ls -lh '{}' ';' 
+-rw-r--r-- 1 root root 51K 6月   5 09:19 /data/wwwroot/somshu/extend/core/logic/orthdontics/CaseLogic.php
+-rw-r--r-- 1 root root 72K 6月   5 09:37 /data/wwwroot/somshu/admin/admin/controller/Telemarket.php
+-rw-r--r-- 1 www www 40K 6月   4 16:20 /data/wwwroot/onebase/runtime/cache/7a/97a35160987a8f39536d2c5ee90e09.php

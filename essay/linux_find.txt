@@ -1,0 +1,81 @@
+#linux find 操作
+
+1.find 命令接收一个或多个目录名来执行搜索搜索。例如，输出我们的家目录的路径名列表
+[root@localhost tmp]# find ~
+
+在最活跃的用户帐号中，这将产生一张很大的列表。因为这张列表被发送到标准输出， 我们可以把这个列表管道到其它的程序中。让我们使用 wc 程序来计算出文件的数量：
+[root@localhost tmp]# find ~ |wc -l
+914
+
+比如说我们想在我们的搜索中得到目录列表。我们可以添加以下测试条件：
+[root@localhost tmp]# find ~ -type d | wc -l
+93
+
+添加测试条件-type d 限制了只搜索目录。相反地，我们可以使用这个测试条件来限定搜索普通文件：
+[root@localhost tmp]# find ~ -type f | wc -l
+821
+
+我们也可以通过加入一些额外的测试条件，根据文件大小和文件名来搜索：让我们查找所有文件名匹配 通配符模式“*.php”和文件大小大于90k的普通文件：
+[root@localhost tmp]# find /data/wwwroot/toolink/ -type f -name '*.php' -size +90k | wc -l
+5
+
+[root@localhost tmp]# find /data/wwwroot/toolink/* -type f -name '*.php' -size +90k | xargs ls -lh
+-rw-rw-r-- 1 root root  99K 4月  20 11:58 /data/wwwroot/toolink/admin/admin/service/PrepayCard.php
+-rw-rw-r-- 1 root root  98K 5月  31 09:46 /data/wwwroot/toolink/clinic/reservation/model/ReservationToday.php
+-rw-rw-r-- 1 root root  93K 7月  19 2017 /data/wwwroot/toolink/extend/alioss/src/OSS/OssClient.php
+-rw-rw-r-- 1 root root 215K 4月  16 11:20 /data/wwwroot/toolink/extend/idvalidator/GB2260.php
+-rw-r--r-- 1 root root  96K 1月  15 14:09 /data/wwwroot/toolink/vendor/symfony/http-foundation/Tests/RequestTest.php
+
+
+[root@localhost tmp]# find /data/wwwroot/somshu/* -type f -name '*.php' -cmin -480
+/data/wwwroot/somshu/admin/admin/service/Telemarket.php
+/data/wwwroot/somshu/admin/admin/validate/Telemarket.php
+/data/wwwroot/somshu/admin/admin/controller/Telemarket.php
+/data/wwwroot/somshu/admin/clinic/model/ClinicManager.php
+/data/wwwroot/somshu/clinic/orthdontics/service/CaseInfo.php
+/data/wwwroot/somshu/extend/core/logic/orthdontics/FactoryDigitization.php
+/data/wwwroot/somshu/extend/core/logic/orthdontics/FactoryDesign.php
+/data/wwwroot/somshu/extend/core/logic/orthdontics/FactoryProduce.php
+
+#查找480分钟之内修改的 .php文件
+[root@localhost tmp]# find /data/wwwroot/somshu/* -type f -name '*.php' -cmin -480 | xargs ls -lh
+-rw-r--r-- 1 root root  58K 5月  31 11:14 /data/wwwroot/somshu/admin/admin/controller/Telemarket.php
+-rw-r--r-- 1 root root  73K 5月  31 11:33 /data/wwwroot/somshu/admin/admin/service/Telemarket.php
+-rw-r--r-- 1 root root 7.8K 5月  31 11:14 /data/wwwroot/somshu/admin/admin/validate/Telemarket.php
+-rw-r--r-- 1 root root  20K 5月  31 11:10 /data/wwwroot/somshu/admin/clinic/model/ClinicManager.php
+-rw-r--r-- 1 root root  64K 5月  31 14:21 /data/wwwroot/somshu/clinic/orthdontics/service/CaseInfo.php
+-rw-r--r-- 1 root root  11K 5月  31 11:18 /data/wwwroot/somshu/extend/core/logic/orthdontics/FactoryDesign.php
+-rw-r--r-- 1 root root  27K 5月  31 11:18 /data/wwwroot/somshu/extend/core/logic/orthdontics/FactoryDigitization.php
+-rw-r--r-- 1 root root 2.6K 5月  31 11:18 /data/wwwroot/somshu/extend/core/logic/orthdontics/FactoryProduce.php
+
+#查找最后修改时间晚于/data/wwwroot/somshu/admin/admin/service/Telemarket.php 的文件
+[root@localhost tmp]# find /data/wwwroot/somshu/* -type f -name '*.php' -cnewer /data/wwwroot/somshu/admin/admin/service/Telemarket.php | xargs ls -lh
+-rw-r--r-- 1 root root 64K 5月  31 14:21 /data/wwwroot/somshu/clinic/orthdontics/service/CaseInfo.php
+
+#我们可以查找权限不是0600的文件和权限不是0700的目录。幸运地是，find 命令提供了 一种方法来结合测试条件，通过使用逻辑操作符来创建更复杂的逻辑关系。 为了表达上述的测试条件，我们可以这样做：
+[root@localhost tmp]# find ~ \( -type f -not -perm 0600 \) -or \( -type d -not -perm 0700 \) | xargs ls -lh | less
+
+#我们可以使用 find 命令来删除符合一定条件的文件。例如，来删除扩展名为“.php”的文件，我们可以使用这个命令：
+[root@localhost tmp]# find /tmp/test -type f -name '*.php'
+/tmp/test/DiagnosticModifyWx.php
+[root@localhost tmp]# find /tmp/test -type f -name '*.php' -delete
+
+
+[root@localhost tmp]# find /data/wwwroot/somshu/admin/common/ -type f -name '*.php' -exec ls -l '{}' ';'
+-rw-rw-r-- 1 root root 2565 5月   4 10:03 /data/wwwroot/somshu/admin/common/Authority.php
+-rw-rw-r-- 1 root root 13196 5月  21 17:50 /data/wwwroot/somshu/admin/common/Common.php
+-rw-rw-r-- 1 root root 1651 5月   4 10:03 /data/wwwroot/somshu/admin/common/controller/ApiController.php
+-rw-rw-r-- 1 root root 4155 5月  22 17:56 /data/wwwroot/somshu/admin/common/controller/BaseController.php
+-rw-r--r-- 1 root root 2905 3月  15 16:25 /data/wwwroot/somshu/admin/common/controller/DataConfig.php
+-rw-rw-r-- 1 root root 10908 5月   4 10:03 /data/wwwroot/somshu/admin/common/Hook.php
+-rw-rw-r-- 1 root root 329 5月   4 10:03 /data/wwwroot/somshu/admin/common/model/AdminDepartment.php
+-rw-rw-r-- 1 root root 329 5月   4 10:03 /data/wwwroot/somshu/admin/common/model/AdminDictionary.php
+-rw-rw-r-- 1 root root 8556 5月   4 10:03 /data/wwwroot/somshu/admin/common/model/AdminManager.php
+-rw-rw-r-- 1 root root 14842 5月   4 10:03 /data/wwwroot/somshu/admin/common/model/AdminStaff.php
+-rw-rw-r-- 1 root root 568 5月   4 10:03 /data/wwwroot/somshu/admin/common/model/DataConfig.php
+-rw-rw-r-- 1 root root 28329 5月   4 10:03 /data/wwwroot/somshu/admin/common/service/ClinicManager.php
+-rw-rw-r-- 1 root root 3714 5月   4 10:03 /data/wwwroot/somshu/admin/common/service/Dictionary.php
+-rw-rw-r-- 1 root root 8565 5月   4 10:03 /data/wwwroot/somshu/admin/common/validate/AdminManager.php
+-rw-rw-r-- 1 root root 1372 5月   4 10:03 /data/wwwroot/somshu/admin/common/validate/Dictionary.php
+-rw-rw-r-- 1 root root 7699 5月   4 10:03 /data/wwwroot/somshu/admin/common/validate/Staff.php
+-rw-rw-r-- 1 root root 1148 5月   4 10:03 /data/wwwroot/somshu/admin/common/verify/VerifyCode.php

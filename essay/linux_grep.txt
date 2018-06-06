@@ -1,0 +1,71 @@
+grep参数使用：
+test.txt
+  1 hello,world
+  2 this is a test
+  3 okay, what are you doing?
+  4 what? hahaha, love me, love my dog
+  5 where is a will, there is a way.
+  6 春江潮水连海平，海上明月共潮生。
+  7 滟滟随波千万里，何处春江无月明！
+  8 江流宛转绕芳甸，月照花林皆似霰；
+  9 空里流霜不觉飞，汀上白沙看不见。
+ 10 江天一色无纤尘，皎皎空中孤月轮。
+ 11 江畔何人初见月？江月何年初照人？
+ 12 人生代代无穷已，江月年年只相似。
+ 13 不知江月待何人，但见长江送流水。
+ 14 白云一片去悠悠，青枫浦上不胜愁。
+ 15 谁家今夜扁舟子？何处相思明月楼？
+ 16 everything is okay.
+                                   
+1. -b 在搜索到的行的前面打印该行所在的块号码
+[root@localhost tmp]# grep -b 'where' /tmp/test.txt 
+88:where is a will, there is a way.
+
+2. -c 只显示有多少行匹配 ，而不具体显示匹配的行
+[root@localhost tmp]# grep -i 'OKAY' /tmp/test.txt 
+okay, what are you doing?
+everything is okay.
+
+[root@localhost tmp]# grep -c 'okay' /tmp/test.txt 
+2
+
+3. -h 不显示文件名
+[root@localhost tmp]# grep -h 'okay' /tmp/test.txt 
+okay, what are you doing?
+everything is okay.
+
+4. -i 在字符串比较的时候忽略大小写
+[root@localhost tmp]# grep -i 'HELLO' /tmp/test.txt 
+hello,world
+
+5. -l 只显示包含匹配模板的行的文件名清单，不同项目之间用换行符分隔
+[root@localhost tmp]# grep -i -l 'HELLO' /tmp/test.txt 
+/tmp/test.txt
+
+ 查询 .txt文件中包含 关键词hello的文件
+[root@localhost tmp]# find / -type f -name '*.txt' -exec grep -l -i 'HELLO' '{}' ';' | wc -l
+44
+
+[root@localhost tmp]# find /usr/share/doc/*  -type f -name '*.txt' -exec grep -l -i 'Hello' --color '{}' ';'             
+/usr/share/doc/cmake-2.8.12.2/Example/CMakeLists.txt
+/usr/share/doc/cmake-2.8.12.2/Example/Demo/CMakeLists.txt
+/usr/share/doc/cmake-2.8.12.2/Example/Hello/CMakeLists.txt
+/usr/share/doc/git-1.8.3.1/RelNotes/1.7.4.txt
+/usr/share/doc/git-1.8.3.1/RelNotes/1.7.5.1.txt
+/usr/share/doc/git-1.8.3.1/RelNotes/1.8.2.txt
+/usr/share/doc/git-1.8.3.1/git-checkout.txt
+/usr/share/doc/git-1.8.3.1/git-commit.txt
+
+[root@localhost tmp]# find /usr/share/doc/pango-1.40.4/HELLO.txt  -type f -name '*.txt' -exec grep -i 'Hello' --color '{}' ';'
+This is a list of ways to say hello in various languages.
+English Hello
+
+
+6. -L 打印不匹配模板的文件名清单
+[root@localhost tmp]# find /usr/share/doc/*  -type f -name '*.txt' -exec grep -L -i 'Hello' --color '{}' ';' | wc -l
+711
+
+
+-n   在每一行前面打印该行在文件中的行数
+-s   静默工作，除非出现错误信息否则不打印任何信息，这个功能在检测退出状态的时候有用
+-v   反检索，只显示不匹配的行
