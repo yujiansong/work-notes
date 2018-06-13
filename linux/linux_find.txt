@@ -1,0 +1,180 @@
+
+find应用:
+
+1.在它的最简单的使用方式中，find命令接收一个或多个目录名来执行搜索搜索
+[root@izbp10vxf7nhzxulpx8k4wz tmp]# find /data/wwwroot/testing/toolink/clinic/prepaycard/controller/
+/data/wwwroot/testing/toolink/clinic/prepaycard/controller/
+/data/wwwroot/testing/toolink/clinic/prepaycard/controller/PrepayCard.php
+
+[root@izbp10vxf7nhzxulpx8k4wz tmp]# find /data/wwwroot/testing/toolink/clinic | wc -l
+395
+
+我们想在我们的搜索中得到目录列表
+[root@izbp10vxf7nhzxulpx8k4wz tmp]# find ~ -type d | wc -l
+19
+
+这里是 find 命令支持的常见文件类型测试条件：
+文件类型	描述
+b			块特殊设备文件
+c			字符特殊设备文件
+d			目录
+f			普通文件
+l			符号链接
+
+#查找文件类型为 .php 的 且 大于 90k 的文件
+[root@izbp10vxf7nhzxulpx8k4wz tmp]# find /data/wwwroot/testing/toolink/* -type f -name "*.php" -size +90k
+/data/wwwroot/testing/toolink/admin/admin/service/PrepayCard.php
+/data/wwwroot/testing/toolink/clinic/reservation/model/ReservationToday.php
+/data/wwwroot/testing/toolink/extend/alioss/src/OSS/OssClient.php
+/data/wwwroot/testing/toolink/extend/idvalidator/GB2260.php
+/data/wwwroot/testing/toolink/extra/clinic/reservation/model/ReservationToday.php
+/data/wwwroot/testing/toolink/vendor/symfony/http-foundation/Tests/RequestTest.php
+
+#查找文件类型为 .log的且大约 1G 的日志
+[root@izbp10vxf7nhzxulpx8k4wz tmp]# find /data/wwwroot/testing/toolink/* -type f -name "*.log" -size +1G | xargs ls -lh  
+-rwxrwxrwx 1 www www 1.3G Jun  1 00:16 /data/wwwroot/testing/toolink/runtime/hlkq.log
+
+#查找文件类型为 .php 且小于 1k 的文件
+[root@izbp10vxf7nhzxulpx8k4wz tmp]# find /data/wwwroot/testing/toolink/* -type f -name "*.php" -size -1k | xargs ls -lh
+-rw-r--r-- 1 www www 0 May  2 16:29 /data/wwwroot/testing/toolink/order/order/api/controller/Factory.php
+
+#查询项目中的php文件数量
+[root@izbp10vxf7nhzxulpx8k4wz tmp]# find /data/wwwroot/testing/toolink/* -type f -name "*.php" | wc -l
+3183
+
+#查询项目中的 .log日志数量
+[root@izbp10vxf7nhzxulpx8k4wz tmp]# find /data/wwwroot/testing/toolink/* -type f -name "*.log" | wc -l
+1772
+
+#查找文件为正好为50k 的php 文件
+[root@izbp10vxf7nhzxulpx8k4wz tmp]# find /data/wwwroot/testing/toolink/* -type f -name "*.php" -size 50k | xargs ls -lh
+-rw-r--r-- 1 www www 50K May  9 11:23 /data/wwwroot/testing/toolink/extra/clinic/reservation/service/ReservationToday.php
+
+表18-2: find 大小单位
+字符	单位
+b	    512 个字节块。如果没有指定单位，则这是默认值。
+c		字节
+w		两个字节的字
+k		千字节(1024个字节单位)
+M		兆字节(1048576个字节单位)
+G		千兆字节(1073741824个字节单位)
+
+表18-3: find 测试条件
+测试条件	描述
+-cmin n	匹配内容或属性最后修改时间正好在 n 分钟之前的文件或目录。 指定少于 n 分钟之前，使用 -n，指定多于 n 分钟之前，使用 +n。
+
+#在500分钟之内修改的 .PHP 文件
+[root@izbp10vxf7nhzxulpx8k4wz tmp]# find /data/wwwroot/testing/toolink/* -type f -name "*.php" -cmin -500 | xargs ls -lh
+-rw-r--r-- 1 www www  58K May 31 18:44 /data/wwwroot/testing/toolink/admin/admin/controller/Telemarket.php
+-rw-r--r-- 1 www www  73K May 31 18:44 /data/wwwroot/testing/toolink/admin/admin/service/Telemarket.php
+-rw-r--r-- 1 www www 7.9K May 31 19:11 /data/wwwroot/testing/toolink/admin/admin/validate/Telemarket.php
+-rw-r--r-- 1 www www  20K May 31 18:44 /data/wwwroot/testing/toolink/admin/clinic/model/ClinicManager.php
+-rw-r--r-- 1 www www  14K May 31 18:44 /data/wwwroot/testing/toolink/admin/clinic/service/Clinic.php
+-rw-r--r-- 1 www www  11K May 31 18:44 /data/wwwroot/testing/toolink/clinic/common/model/ClinicManager.php
+-rw-r--r-- 1 www www 1.7K May 31 18:44 /data/wwwroot/testing/toolink/extend/core/dictionary/ClinicAppointments.php
+
+-cnewer file	匹配内容或属性最后修改时间晚于 file 的文件或目录。
+#查找文件最后修改时间晚于 /data/wwwroot/testing/toolink/admin/admin/controller/Telemarket.php 的数量
+[root@izbp10vxf7nhzxulpx8k4wz tmp]# find /data/wwwroot/testing/toolink/* -type f -name "*.php" -cnewer /data/wwwroot/testing/toolink/admin/admin/controller/Telemarket.php | wc -l
+7
+
+
+通过把末尾的分号改为加号，就激活了 find 命令的一个功能，把搜索结果结合为一个参数列表， 然后用于所期望的命令的一次执行。再看一下之前的例子，这个例子中：
+
+#找出服务器中 文件类型为.php 的 且修改时间在24小时之内 大于 50k 的文件  每次找到一个匹配的文件， 就会执行一次 ls 命令
+[root@izbp10vxf7nhzxulpx8k4wz tmp]# find / -type f -name '*.php' -ctime -1 -size +50k -exec ls -lh '{}' ';'
+-rw-r--r-- 1 www www 64K Jun  1 18:07 /data/wwwroot/testing/toolink/clinic/orthdontics/service/CaseInfo.php
+-rw-r--r-- 1 www www 51K Jun  1 17:27 /data/wwwroot/testing/toolink/extend/core/logic/orthdontics/CaseLogic.php
+
+通过把命令改为
+[root@izbp10vxf7nhzxulpx8k4wz tmp]# find / -type f -name '*.php' -ctime -1 -size +50k -exec ls -lh '{}' +
+-rw-r--r-- 1 www www 64K Jun  1 18:07 /data/wwwroot/testing/toolink/clinic/orthdontics/service/CaseInfo.php
+-rw-r--r-- 1 www www 51K Jun  1 17:27 /data/wwwroot/testing/toolink/extend/core/logic/orthdontics/CaseLogic.php
+虽然我们得到一样的结果，但是系统只需要执行一次 ls 命令。
+
+xargs
+这个 xargs 命令会执行一个有趣的函数。它从标准输入接受输入，并把输入转换为一个特定命令的 参数列表。对于我们的例子，我们可以这样使用它：
+
+[root@izbp10vxf7nhzxulpx8k4wz tmp]# find / -type f -name '*.php' -ctime -1 -size +50k | xargs ls -lh
+-rw-r--r-- 1 www www 64K Jun  1 18:07 /data/wwwroot/testing/toolink/clinic/orthdontics/service/CaseInfo.php
+-rw-r--r-- 1 www www 51K Jun  1 17:27 /data/wwwroot/testing/toolink/extend/core/logic/orthdontics/CaseLogic.php
+
+
+Linux常用命令之 查找命令 find -atime，-mtime，-ctime
+[root@izbp10vxf7nhzxulpx8k4wz tmp]# stat test.log
+  File: ‘test.log’
+  Size: 10442913        Blocks: 20400      IO Block: 4096   regular file
+Device: fd01h/64769d    Inode: 397448      Links: 1
+Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)
+Access: 2018-06-02 15:43:30.387716939 +0800  最近访问时间（atime）
+Modify: 2018-06-02 11:23:11.000000000 +0800  最近更改时间（mtime）
+Change: 2018-06-02 15:43:12.564069649 +0800  最近状态改动时间（ctime）
+ Birth: -
+
+atime  : 它代表着最近一次访问文件的时间，显示一个文件的内容或者运行一个shell脚本会更新文件的atime。可用ls -lu命令查看。 
+mtime : 它代表着最近一次文件内容被修改的时间。可用ls -l 命令查看。
+ctime  : 它代表着最近一次文件状态改变的时间 ,是status change time，是在写入文件、更改所有者、权限或链接设置时随 Inode 的内容更改而更改，即文件状态最后一次被改变的时间。可用ls -lc 命令查看。
+
+    -mtime n : n为数字，意思为在n天之前的“一天之内”被更改过内容的文件
+
+　　-mtime +n : 列出在n天之前（不含n天本身）被更改过内容的文件名
+
+　　-mtime -n : 列出在n天之内（含n天本身）被更改过内容的文件名
+
+例如：将系统24小时内更改过的 .php文件列出
+[root@izbp10vxf7nhzxulpx8k4wz tmp]# find / -type f -name '*.php' -mtime 0 -exec ls -lh '{}' ';'
+-rw-r--r-- 1 www www 6.7K Jun  1 17:27 /data/wwwroot/testing/toolink/factory/orthdontics/validate/Orthdontics.php
+-rw-r--r-- 1 www www 12K Jun  1 17:27 /data/wwwroot/testing/toolink/factory/orthdontics/service/Produce.php
+-rw-r--r-- 1 www www 64K Jun  1 18:07 /data/wwwroot/testing/toolink/clinic/orthdontics/service/CaseInfo.php
+-rw-r--r-- 1 www www 13K Jun  1 17:27 /data/wwwroot/testing/toolink/clinic/orthdontics/service/CaseRelevant.php
+-rw-r--r-- 1 www www 51K Jun  1 17:27 /data/wwwroot/testing/toolink/extend/core/logic/orthdontics/CaseLogic.php
+-rw-r--r-- 1 www www 16K Jun  1 17:27 /data/wwwroot/testing/toolink/extend/core/logic/orthdontics/FactoryOrthdontics.php
+-rw-r--r-- 1 www www 27K Jun  1 17:27 /data/wwwroot/testing/toolink/extend/core/logic/orthdontics/CaseRelevantLogic.php
+-rw-r--r-- 1 www www 27K Jun  1 17:27 /data/wwwroot/testing/toolink/extend/core/logic/orthdontics/FactoryDigitization.php
+
+[root@izbp10vxf7nhzxulpx8k4wz tmp]# find / -type f -name '*.php' -mtime 0 -exec ls -lh '{}' +
+-rw-r--r-- 1 www www  64K Jun  1 18:07 /data/wwwroot/testing/toolink/clinic/orthdontics/service/CaseInfo.php
+-rw-r--r-- 1 www www  13K Jun  1 17:27 /data/wwwroot/testing/toolink/clinic/orthdontics/service/CaseRelevant.php
+-rw-r--r-- 1 www www  51K Jun  1 17:27 /data/wwwroot/testing/toolink/extend/core/logic/orthdontics/CaseLogic.php
+-rw-r--r-- 1 www www  27K Jun  1 17:27 /data/wwwroot/testing/toolink/extend/core/logic/orthdontics/CaseRelevantLogic.php
+-rw-r--r-- 1 www www  27K Jun  1 17:27 /data/wwwroot/testing/toolink/extend/core/logic/orthdontics/FactoryDigitization.php
+-rw-r--r-- 1 www www  16K Jun  1 17:27 /data/wwwroot/testing/toolink/extend/core/logic/orthdontics/FactoryOrthdontics.php
+-rw-r--r-- 1 www www  12K Jun  1 17:27 /data/wwwroot/testing/toolink/factory/orthdontics/service/Produce.php
+-rw-r--r-- 1 www www 6.7K Jun  1 17:27 /data/wwwroot/testing/toolink/factory/orthdontics/validate/Orthdontics.php
+
+#找出系统在两天之内，修改的 .php 文件 且 大于 50k
+[root@izbp10vxf7nhzxulpx8k4wz tmp]# find / -type f -name '*.php' -mtime -2 -size +50k | xargs ls -lh
+-rw-r--r-- 1 www www 58K May 31 18:44 /data/wwwroot/testing/toolink/admin/admin/controller/Telemarket.php
+-rw-r--r-- 1 www www 73K Jun  1 09:28 /data/wwwroot/testing/toolink/admin/admin/service/Telemarket.php
+-rw-r--r-- 1 www www 64K Jun  1 18:07 /data/wwwroot/testing/toolink/clinic/orthdontics/service/CaseInfo.php
+-rw-r--r-- 1 www www 51K Jun  1 17:27 /data/wwwroot/testing/toolink/extend/core/logic/orthdontics/CaseLogic.php
+
+#3天之前的那一天 修改的.php文件 且大于50k
+[root@izbp10vxf7nhzxulpx8k4wz tmp]# find / -type f -name '*.php' -mtime 3 -size +50k -exec ls -lh '{}' ';'
+-rw-r--r-- 1 www www 80K May 30 09:45 /data/wwwroot/testing/toolink/clinic/common/model/DiagnosticAppointment.php
+-rw-r--r-- 1 www www 51K May 30 09:45 /data/wwwroot/testing/toolink/clinic/reservation/service/ReservationToday.php
+
+#4天以前， 修改的.php文件 且 大小为28k
+[root@izbp10vxf7nhzxulpx8k4wz tmp]# find / -type f -name '*.php' -mtime +4 -size 28k -exec ls -lh '{}' + 
+-rwxr-xr-x 1 www www 28K Dec 23  2014 /data/wwwroot/other/mesing/cn/Include/Library/Vendor/Smarty/sysplugins/smarty_internal_template.php
+-rwxr-xr-x 1 www www 28K Dec 23  2014 /data/wwwroot/other/mesing/cn/Include/Library/Vendor/Smarty/sysplugins/smarty_resource.php
+-rwxr-xr-x 1 www www 28K Dec 23  2014 /data/wwwroot/other/mesing/en/Include/Library/Vendor/Smarty/sysplugins/smarty_internal_template.php
+-rwxr-xr-x 1 www www 28K Dec 23  2014 /data/wwwroot/other/mesing/en/Include/Library/Vendor/Smarty/sysplugins/smarty_resource.php
+
+#4天前，10天之内 修改的 .php 文件 且 大于50k
+[root@izbp10vxf7nhzxulpx8k4wz tmp]# find / \( -type f -name '*.php' -mtime +4 -size 50k \) -or \( -type f -name '*.php' -mtime -10 -size +50k \) -exec ls -lh '{}' +
+-rw-r--r-- 1 www www  58K May 31 18:44 /data/wwwroot/testing/toolink/admin/admin/controller/Telemarket.php
+-rw-r--r-- 1 www www  73K Jun  1 09:28 /data/wwwroot/testing/toolink/admin/admin/service/Telemarket.php
+-rw-r--r-- 1 www www  80K May 30 09:45 /data/wwwroot/testing/toolink/clinic/common/model/DiagnosticAppointment.php
+-rw-r--r-- 1 www www  64K Jun  1 18:07 /data/wwwroot/testing/toolink/clinic/orthdontics/service/CaseInfo.php
+-rw-r--r-- 1 www www  96K May 31 09:47 /data/wwwroot/testing/toolink/clinic/reservation/model/ReservationToday.php
+-rw-r--r-- 1 www www  51K May 30 09:45 /data/wwwroot/testing/toolink/clinic/reservation/service/ReservationToday.php
+-rw-r--r-- 1 www www  51K Jun  1 17:27 /data/wwwroot/testing/toolink/extend/core/logic/orthdontics/CaseLogic.php
+-rw-r--r-- 1 www www 2.3M May 24 01:01 /data/wwwroot/toolinkoa/tmp/backup/201805240101468.file.zip.php
+-rw-r--r-- 1 www www 358K May 24 01:01 /data/wwwroot/toolinkoa/tmp/backup/201805240101468.sql.php
+
+#查询系统在2分钟之内变化的 .log 日志 且小于5M
+[root@izbp10vxf7nhzxulpx8k4wz tmp]# find / -type f -name '*.log' -cmin -2 -size -5M -exec ls -lh '{}' ';'
+-rw-r--r-- 1 redis redis 601K Jun  2 17:30 /var/log/redis/redis.log
+-rw-r--r-- 1 root root 28K Jun  2 17:30 /data/logs/crontab/closeOrderStatus_20180602.log
+-rw-r--r-- 1 root root 435K Jun  2 17:30 /data/wwwroot/testing/toolink/runtime/log/201806_cli/02_cli.log

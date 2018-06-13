@@ -1,0 +1,158 @@
+#1. grep 
+[root@izbp10vxf7nhzxulpx8k4wz tmp]# ls /usr/bin/ | grep zip
+bunzip2
+bzip2
+bzip2recover
+funzip
+gpg-zip
+gunzip
+gzip
+unzip
+unzipsfx
+zip
+zipcloak
+zipgrep
+zipinfo
+zipnote
+zipsplit
+
+[root@izbp10vxf7nhzxulpx8k4wz tmp]# ls /usr/bin/ | grep zip | wc -l
+15
+
+[root@izbp10vxf7nhzxulpx8k4wz foo]# grep bzip dirlist-*.txt
+dirlist-bin.txt:bzip2
+dirlist-bin.txt:bzip2recover
+dirlist-usr-bin.txt:bzip2
+dirlist-usr-bin.txt:bzip2recover
+
+[root@izbp10vxf7nhzxulpx8k4wz foo]# grep bzip dirlist-*.txt | wc -l
+4
+
+#如果我们只是对包含匹配项的文件列表，而不是对匹配项本身感兴趣 的话，我们可以指定-l 选项：
+[root@izbp10vxf7nhzxulpx8k4wz foo]# grep -l bzip dirlist-*.txt
+dirlist-bin.txt
+dirlist-usr-bin.txt
+
+#相反地，如果我们只想查看不包含匹配项的文件列表，我们可以这样操作：
+[root@izbp10vxf7nhzxulpx8k4wz foo]# grep -L bzip dirlist-*.txt
+dirlist-sbin.txt
+dirlist-usr-sbin.txt
+
+#第一个元字符是圆点字符，其被用来匹配任意字符。如果我们在正则表达式中包含它， 它将会匹配在此位置的任意一个字符。这里有个例子：
+-h	应用于多文件搜索，不输出文件名。也可用--no-filename 选项来指定。
+
+[root@izbp10vxf7nhzxulpx8k4wz foo]# grep -h '.zip' dirlist-*.txt
+bunzip2
+bzip2
+bzip2recover
+funzip
+gpg-zip
+gunzip
+gzip
+unzip
+unzipsfx
+bunzip2
+bzip2
+bzip2recover
+funzip
+gpg-zip
+gunzip
+gzip
+unzip
+unzipsfx
+
+[root@izbp10vxf7nhzxulpx8k4wz foo]# grep -h '.zip' dirlist-*.txt | wc -l
+18
+
+[root@izbp10vxf7nhzxulpx8k4wz foo]# grep '.zip' dirlist-*.txt
+dirlist-bin.txt:bunzip2
+dirlist-bin.txt:bzip2
+dirlist-bin.txt:bzip2recover
+dirlist-bin.txt:funzip
+dirlist-bin.txt:gpg-zip
+dirlist-bin.txt:gunzip
+dirlist-bin.txt:gzip
+dirlist-bin.txt:unzip
+dirlist-bin.txt:unzipsfx
+dirlist-usr-bin.txt:bunzip2
+dirlist-usr-bin.txt:bzip2
+dirlist-usr-bin.txt:bzip2recover
+dirlist-usr-bin.txt:funzip
+dirlist-usr-bin.txt:gpg-zip
+dirlist-usr-bin.txt:gunzip
+dirlist-usr-bin.txt:gzip
+dirlist-usr-bin.txt:unzip
+dirlist-usr-bin.txt:unzipsfx
+
+
+[root@izbp10vxf7nhzxulpx8k4wz foo]# grep '^zip' dirlist-*.txt
+dirlist-bin.txt:zip
+dirlist-bin.txt:zipcloak
+dirlist-bin.txt:zipgrep
+dirlist-bin.txt:zipinfo
+dirlist-bin.txt:zipnote
+dirlist-bin.txt:zipsplit
+dirlist-usr-bin.txt:zip
+dirlist-usr-bin.txt:zipcloak
+dirlist-usr-bin.txt:zipgrep
+dirlist-usr-bin.txt:zipinfo
+dirlist-usr-bin.txt:zipnote
+dirlist-usr-bin.txt:zipsplit
+
+[root@izbp10vxf7nhzxulpx8k4wz foo]# grep 'zip$' dirlist-*.txt
+dirlist-bin.txt:funzip
+dirlist-bin.txt:gpg-zip
+dirlist-bin.txt:gunzip
+dirlist-bin.txt:gzip
+dirlist-bin.txt:unzip
+dirlist-bin.txt:zip
+dirlist-usr-bin.txt:funzip
+dirlist-usr-bin.txt:gpg-zip
+dirlist-usr-bin.txt:gunzip
+dirlist-usr-bin.txt:gzip
+dirlist-usr-bin.txt:unzip
+dirlist-usr-bin.txt:zip
+
+[root@izbp10vxf7nhzxulpx8k4wz foo]# grep '^zip$' dirlist-*.txt
+dirlist-bin.txt:zip
+dirlist-usr-bin.txt:zip
+
+
+#正则表达式‘^$’（行首和行尾之间没有字符）会匹配空行。
+
+[root@izbp10vxf7nhzxulpx8k4wz foo]# grep '[bg]zip' dirlist-*.txt
+dirlist-bin.txt:bzip2
+dirlist-bin.txt:bzip2recover
+dirlist-bin.txt:gzip
+dirlist-usr-bin.txt:bzip2
+dirlist-usr-bin.txt:bzip2recover
+dirlist-usr-bin.txt:gzip
+
+[root@izbp10vxf7nhzxulpx8k4wz foo]# grep '[^bg]zip' dirlist-*.txt
+dirlist-bin.txt:bunzip2
+dirlist-bin.txt:funzip
+dirlist-bin.txt:gpg-zip
+dirlist-bin.txt:gunzip
+dirlist-bin.txt:unzip
+dirlist-bin.txt:unzipsfx
+dirlist-usr-bin.txt:bunzip2
+dirlist-usr-bin.txt:funzip
+dirlist-usr-bin.txt:gpg-zip
+dirlist-usr-bin.txt:gunzip
+dirlist-usr-bin.txt:unzip
+dirlist-usr-bin.txt:unzipsfx
+
+[root@izbp10vxf7nhzxulpx8k4wz foo]# grep -h '^[A-Z]' dirlist-*.txt
+Mail
+NetworkManager
+Mail
+NetworkManager
+
+[root@izbp10vxf7nhzxulpx8k4wz foo]# grep -h '[A-Za-z0-9]' dirlist-*.txt | wc -l
+2636
+
+
+
+
+
+
