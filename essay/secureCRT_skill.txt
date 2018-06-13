@@ -1,8 +1,0 @@
-
-1. SecureCR使用方法：
-Alt + Enter -- 全屏
-Ctrl + A -- 光标移至行首
-Ctrl + E -- 光标移至行末
-
-2.常用设置
-http://xiaogang6123.blog.163.com/blog/static/1133841772009228415046/
