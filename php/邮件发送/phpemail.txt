@@ -1,0 +1,12 @@
+1.php发送邮件相关
+https://packagist.org/packages/phpmailer/phpmailer?
+https://edu.csdn.net/course/play/7398/150252
+
+qq邮箱登录账号: 
+115...
+成功开启IMAP/SMTP服务,在第三方客户端登录时，密码框请输入以下授权码：
+xbanewnnqdxhhfdf
+
+1.进入thinkphp5项目框架下 G:\chinatp5\tp5
+2.composer安装 composer require phpmailer/phpmailer
+3.开通 IMAP/SMTP服务 qq邮箱或者其他邮箱 申请开通获得授权码
