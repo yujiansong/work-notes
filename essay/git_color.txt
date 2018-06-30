@@ -1,0 +1,14 @@
+
+提交代码，但github上的绿格子没有变绿
+参考：https://blog.csdn.net/junloin/article/details/76695889
+http://blog.csdn.net/junloin/article/details/75197880
+
+但是代码已经提交在github上了，那就是提交的帐号出错了， 
+赶紧检查检查下在本机上的帐号
+$ git config user.email
+ok520koa@163.com
+
+修改为github上绑定的邮箱
+$ git config --global user.email "yujiansong6@163.com"
+
+
