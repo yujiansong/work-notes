@@ -1,0 +1,19 @@
+
+1.composer安装：
+参考：https://edu.csdn.net/course/play/7398/150252
+https://pkg.phpcomposer.com/
+
+windows下安装地址
+https://getcomposer.org/Composer-Setup.exe
+
+安装时 settting check 选择当前所使用的php版本
+C:\phpstudy\php\php-7.0.12-nts\php.exe
+提示：记得开启php扩展：php_openssl
+
+安装完成在命令行下用 composer -v 查看是否安装成功
+
+2.切换到国内镜像
+composer config -g repo.packagist composer https://packagist.phpcomposer.com
+
+
+
