@@ -2,7 +2,7 @@
 
 1.输出两个提交间的改变
 如果你需要输出某两个提交间的改变时，你可以使用这个。
-git archive -o ../latest.zip NEW_COMMIT_ID_HERE $(git diff --name-only OLD_COMMIT_ID_HERE NEW_COMMIT_ID_HERE)
+git archive -o ../../latest.zip NEW_COMMIT_ID_HERE $(git diff --name-only OLD_COMMIT_ID_HERE NEW_COMMIT_ID_HERE)
 
 example：
 老版本：a1fd4c1370b325328e47b048146c315fabe8040b
