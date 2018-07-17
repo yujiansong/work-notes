@@ -1,0 +1,13 @@
+
+1.标准的url访问模式:
+http://domainName/index.php/模块/控制器/操作
+
+example:
+http://www.tp5.com/index.php/index/test/index
+
+index.php称之为应用的入口文件（可以被隐藏）
+http://www.tp5.com/index/test/index
+
+模块在ThinkPHP中的概念其实就是应用目录下面的子目录，而官方的规范是目录名小写，
+因此模块全部采用小写命名，无论URL是否开启大小写转换，模块名都会强制小写。
+
