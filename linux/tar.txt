@@ -1,0 +1,33 @@
+#tar 相关命令
+
+tar 压缩或解压缩
+-c 建立一个压缩文件的参数指令（create的意思）
+-x 解压缩文件
+-z 启用gzip压缩
+-j 启用bzip2压缩
+-v 显示压缩或解压缩过程
+-f 指定压缩包名
+
+例子：
+压缩aaa目录并创建压缩文件aaa.tar.gz
+tar -czvf aaa.tar.gz aaa
+
+压缩bbb目录并创建压缩文件bbb.tar.bz2
+tar -cjvf bbb.tar.bz2 bbb
+
+解压aaa.tar.gz文件
+tar -xzvf aaa.tar.gz
+
+解压bbb.tar.bz2文件
+tar -xjvf bbb.tar.bz2
+
+#2.tar 压缩排除某个文件夹的方法
+tar -czvf xxx.tar.gz 要打包的目录 --exclude=dir1 --exclude=file1
+提示：要排除的某个目录格式为 --exclude=dir1, 而不是 --exclude=dir1/
+
+例子：打包 toolink项目，排除toolink/runtime 目录
+[root@izbp10vxf7nhzxulpx8k4wz shell-testing]# tar -czvf toolink_20180711_bak.tar.gz /data/wwwroot/testing/toolink --exclude=/data/wwwroot/testing/toolink/runtime
+
+[root@izbp10vxf7nhzxulpx8k4wz shell-testing]# tar -cjvf toolink_20180711_bak.tar.bz2 /data/wwwroot/testing/toolink --exclude=/data/wwwroot/testing/toolink/runtime
+
+参考：https://www.cnblogs.com/afish/p/4476165.html
