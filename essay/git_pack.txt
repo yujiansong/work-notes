@@ -20,3 +20,4 @@ git archive -o ../../20180621.zip 1df8ffc72773 $(git diff --name-only a1fd4c1370
 git diff a1fd4c1370b3 1df8ffc72773 --name-only | xargs tar -czvf update.tar.gz
 参考：https://blog.csdn.net/peterxiaoq/article/details/76174015
 
+
