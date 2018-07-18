@@ -1,0 +1,4 @@
+1.用notepad++打开一个很大的文件关不掉，导致编辑器直接卡掉：
+解决方法：
+删除 C:\Users\Ali\AppData\Roaming\Notepad++\backup 对应的文件
+reference: https://www.cnblogs.com/aliblogs/p/6536740.html
