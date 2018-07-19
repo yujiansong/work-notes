@@ -1,0 +1,47 @@
+#shell备份mysql数据库时出现"Using a password on the command line interface..."
+
+导出MySQL数据库的时候采用mysqldump命令，但是意外发生了出现"Warning: Using a password on the command line interface can be insecure."的错误提示，当然数据库肯定也没有能备份下来。这个问题应该是在MySQL5.6+版本的时候就有出现，可能是为了确保数据库的安全性采用的保护机制。
+
+第一种方法、修改数据库配置文件
+
+1、我们需要修改数据库配置文件，这个要看我们数据库的配置的，有些是在/etc/my.cnf，有些是/etc/my.conf
+
+Warning: Using a password on the command line interface can be insecure.
+
+我们需要在[client]部分添加脚本：
+
+    host=localhost
+    user=数据库用户
+    password='数据库密码'
+
+这里参数要修改成我们自己的。
+
+2、采用命令导出和导入数据库
+
+#导出数据库
+
+    mysqldump --defaults-extra-file=/etc/my.cnf database > database.sql
+
+#导入数据库
+
+    mysql --defaults-extra-file=/etc/my.cnf database < database.sql
+
+这里我们可以看到上面的命令和以前常用的快速导入和导入命令有所不同了，需要加载我们配置的MYSQL配置文件，这个红色部分要根据我们实际的路径修改。用这样的命令导出备份和导入是没有错误提示的。
+
+第二种方法、利用mysql_config_editor
+
+1、设置加密模式
+
+mysql_config_editor set --login-path=local --host=localhost --user=db_user --password
+
+红色部分是需要修改成我们自己数据库用户名的，回车之后会提示我们输入数据库密码，我们照样输入。
+
+2、执行备份
+
+mysqldump -u db_user -pInsecurePassword my_database | gzip > backup.tar.gz
+
+根据我们数据信息修改用户和用户名和数据库密码，执行备份，这里老左测试还是有错误提示，但数据库是可以备份的。
+
+总之，我们只要实现结果，可以选择以上2种方法其一操作，当然老左也有看到其他的方法，这里就不多分享了，如果有兴趣的可以搜索其他解决方法。
+
+reference:https://blog.csdn.net/c_fangfujiang/article/details/52457794
