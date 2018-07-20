@@ -1,0 +1,45 @@
+#linx ls 实现列文件按时间排序
+
+#ls -lht 时间最近的在最前面
+[root@izbp10vxf7nhzxulpx8k4wz sites-available]# ls -lht
+total 84K
+-rw-r--r-- 1 root root 2.0K Jul 19 09:35 helikq_client_kq_wx.conf
+-rw-r--r-- 1 root root 1.3K Jul 18 18:26 helikq_server_kq_wx.conf
+-rw-r--r-- 1 root root  785 Jul 18 18:21 helikq_server_hlkq_wx.conf
+-rw-r--r-- 1 root root 1.7K Jun 20 12:30 smilalign.cn_www_pc.conf
+-rw-r--r-- 1 root root  891 May 22 11:37 helikq_client_hlkq_wx.conf
+-rw-r--r-- 1 root root 1.7K May 22 09:34 helikq_client_admin_pc.conf
+-rw-r--r-- 1 root root 1.3K May 21 10:41 toolink_oa.conf
+
+#ls -lhtr 时间从前到后
+[root@izbp10vxf7nhzxulpx8k4wz sites-available]# ls -lhtr
+total 84K
+-rw-r--r-- 1 root root  777 Apr 19 09:26 helikq_server_yichi_pc.conf
+-rw-r--r-- 1 root root  775 Apr 19 09:26 helikq_server_order_pc.conf
+-rw-r--r-- 1 root root  773 Apr 19 09:26 helikq_server_kq_pc.conf
+-rw-r--r-- 1 root root  637 Apr 19 09:26 helikq_server_go_pc.conf
+-rw-r--r-- 1 root root  848 Apr 19 09:26 helikq_server_chat_pc.conf
+-rw-r--r-- 1 root root  777 Apr 19 09:26 helikq_server_admin_pc.conf
+-rw-r--r-- 1 root root 1.4K Apr 19 09:26 helikq_client_yichi_pc.conf
+-rw-r--r-- 1 root root 1.5K Apr 19 09:26 helikq_client_weichatapp_www_pc.conf
+
+linux 中文件夹的文件按照时间倒序或者升序排列
+1，按照时间升序
+
+命令:ls -lrt
+详细解释:
+
+-l     use a long listing format  以长列表方式显示（详细信息方式）
+-t     sort by modification time 按修改时间排序（最新的在最前面）
+-r     reverse order while sorting （反序）
+
+2，按照时间降序（最新修改的排在前面）
+
+命令:ls -lt
+详细解释:
+
+-l     use a long listing format  以长列表方式显示（详细信息方式）
+-t     sort by modification time 按修改时间排序（最新的在最前面）
+
+
+
