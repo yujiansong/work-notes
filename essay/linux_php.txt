@@ -1,0 +1,14 @@
+
+在linux下执行php程序
+
+[root@localhost shell_test]# #打印当前时间
+[root@localhost shell_test]# php -r "echo time();"
+1532053890[root@localhost shell_test]# php -r "echo time().PHP_EOL;"
+1532053903
+
+[root@localhost shell_test]# #随机输出一个数字
+[root@localhost shell_test]# php -r "echo rand(1,20).PHP_EOL;"
+19
+
+PHP_EOL: 代表php换行符，这个变量会根据平台而改变，在windows下是 /r/n, 在linux 下是 /n, 在mac下是 /r
+
