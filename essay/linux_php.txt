@@ -1,4 +1,4 @@
-
+#昨日种种，皆成今我；今日种种方成新我
 在linux下执行php程序
 
 [root@localhost shell_test]# #打印当前时间
@@ -10,5 +10,5 @@
 [root@localhost shell_test]# php -r "echo rand(1,20).PHP_EOL;"
 19
 
-PHP_EOL: 代表php换行符，这个变量会根据平台而改变，在windows下是 /r/n, 在linux 下是 /n, 在mac下是 /r
+PHP_EOL: 代表php换行符，这个变量会根据平台而改变，在windows下是 ‘/r/n’, 在linux 下是 ‘/n’, 在mac下是 ‘/r’
 
