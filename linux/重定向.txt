@@ -1,0 +1,37 @@
+#重定向标准输出和错误到一个文件
+
+可能有这种情况，我们希望捕捉一个命令的所有输出到一个文件。为了完成这个，我们 必须同时重定向标准输出和标准错误。有两种方法来完成任务。
+第一个，传统的方法， 在旧版本 shell 中也有效：
+
+[root@izbp10vxf7nhzxulpx8k4wz shell-testing]# ls -lht ls-output.txt 
+-rw-r--r-- 1 root root 0 Jul 22 13:06 ls-output.txt
+
+[root@izbp10vxf7nhzxulpx8k4wz shell-testing]# ls -lht /bin/usr > ls-output.txt 2>&1
+
+[root@izbp10vxf7nhzxulpx8k4wz shell-testing]# ls -lht ls-output.txt 
+-rw-r--r-- 1 root root 54 Jul 22 13:27 ls-output.txt
+[root@izbp10vxf7nhzxulpx8k4wz shell-testing]# cat ls-output.txt 
+ls: cannot access /bin/usr: No such file or directory
+
+注意重定向的顺序安排非常重要。标准错误的重定向必须总是出现在标准输出 重定向之后，要不然它不起作用。
+重定向标准错误到文件 ls-output.txt，但是如果命令顺序改为：
+
+[root@izbp10vxf7nhzxulpx8k4wz shell-testing]# ls -lht /bin/usr 2>&1 > ls-output.txt 
+ls: cannot access /bin/usr: No such file or directory
+
+则标准错误定向到屏幕。
+
+现在的 bash 版本提供了第二种方法，
+更精简合理的方法来执行这种联合的重定向。
+[root@izbp10vxf7nhzxulpx8k4wz shell-testing]# ls -lht /bin/usr &> ls-output.txt 
+[root@izbp10vxf7nhzxulpx8k4wz shell-testing]# ls -lht ls-output.txt 
+-rw-r--r-- 1 root root 54 Jul 22 13:32 ls-output.txt
+[root@izbp10vxf7nhzxulpx8k4wz shell-testing]# cat ls-output.txt 
+ls: cannot access /bin/usr: No such file or directory
+
+在这个例子里面，我们使用单单一个表示法 &> 来重定向标准输出和错误到文件 ls-output.txt。
+
+有时候“沉默是金”，我们不想要一个命令的输出结果，只想把它们扔掉。这种情况 尤其适用于错误和状态信息。系统通过重定向输出结果到一个叫做”/dev/null”的特殊文件， 为我们提供了解决问题的方法。这个文件是系统设备，叫做位存储桶，它可以 接受输入，并且对输入不做任何处理。为了隐瞒命令错误信息，我们这样做：
+
+[root@izbp10vxf7nhzxulpx8k4wz shell-testing]# ls -lht /bin/usr 2> /dev/null 
+
