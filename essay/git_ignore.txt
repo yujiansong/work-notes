@@ -1,0 +1,51 @@
+#git 使用命令忽略文件
+
+Administrator@PC-20170726WWVG MINGW64 /f/project/toolink (yujiansong)
+$ git status
+On branch yujiansong
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+        new file:   clinic/cli/controller/QrBarcode.php
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+        modified:   admin/factory/controller/Processing.php
+        modified:   admin/route.php
+        modified:   clinic/cli/controller/QrBarcode.php
+        modified:   clinic/simple/controller/Oss.php
+        modified:   composer.lock
+        modified:   config/extra.php
+        modified:   config/qrcode_rule.php
+
+		
+如果想忽略 composer.lock，可以使用
+Administrator@PC-20170726WWVG MINGW64 /f/project/toolink (yujiansong)
+$ git update-index --assume-unchanged composer.lock
+
+再次查询，则已经忽略此文件
+Administrator@PC-20170726WWVG MINGW64 /f/project/toolink (yujiansong)
+$ git status
+On branch yujiansong
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+        new file:   clinic/cli/controller/QrBarcode.php
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+        modified:   admin/factory/controller/Processing.php
+        modified:   admin/route.php
+        modified:   clinic/cli/controller/QrBarcode.php
+        modified:   clinic/simple/controller/Oss.php
+        modified:   config/extra.php
+        modified:   config/qrcode_rule.php
+
+取消忽略文件：
+git update-index --no-assume-unchanged FILE
+
+reference: https://www.cnblogs.com/mafeng/p/7635228.html
