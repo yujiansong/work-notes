@@ -1,0 +1,57 @@
+#在windows和linux下执行php命令行
+
+#1.在windows下执行php cli
+Microsoft Windows [版本 6.1.7601]
+版权所有 (c) 2009 Microsoft Corporation。保留所有权利。
+
+C:\Users\Administrator>f:
+
+F:\>dir
+ 驱动器 F 中的卷没有标签。
+ 卷的序列号是 FAF7-99D1
+
+ F:\ 的目录
+
+2018/01/23  08:43    <DIR>          branches
+2017/11/17  08:30    <DIR>          Codes
+2017/10/31  09:27    <DIR>          document
+2018/06/21  09:38    <DIR>          project
+2017/11/06  13:56    <DIR>          release
+2018/05/09  10:53    <DIR>          release_pack
+               0 个文件              0 字节
+               6 个目录 286,274,101,248 可用字节
+F:\>cd project
+F:\project>cd toolink
+F:\project\toolink>cd public
+
+F:\project\toolink\public 的目录
+
+2018/04/27  15:38    <DIR>          .
+2018/04/27  15:38    <DIR>          ..
+2018/03/19  10:35               815 admin.php
+2018/03/19  10:35               816 clinic.php
+2018/03/19  10:35               817 factory.php
+2018/03/29  18:00               812 go.php
+2018/03/19  10:35               814 hlkq.php
+2018/04/13  11:26               798 index.php
+2018/03/19  10:35               812 kq.php
+2018/03/19  10:35               812 ky.php
+2018/03/19  10:35               813 order.php
+2018/03/19  10:35               753 router.php
+2018/03/19  10:35               402 toolink_cros.php
+2018/04/27  15:38    <DIR>          uploads
+              11 个文件          8,464 字节
+               3 个目录 286,274,101,248 可用字节
+
+F:\project\toolink\public>php clinic.php cli/Qrbarcode/createdata
+PHP Notice:  Undefined index: REQUEST_METHOD in F:\project\toolink\public\toolin
+k_cros.php on line 16
+
+Notice: Undefined index: REQUEST_METHOD in F:\project\toolink\public\toolink_cro
+s.php on line 16
+'订单,二维码及条形码生成成功!'
+F:\project\toolink\public>
+
+#2.在linux下执行php cli
+[root@localhost tmp]# /usr/local/php/bin/php -q /data/wwwroot/somshu/public/clinic.php cli/qrbarcode/createdata
+
