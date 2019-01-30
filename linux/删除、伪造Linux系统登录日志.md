@@ -130,3 +130,6 @@ Utmp undump of newdump
 ```
 root@raspberrypi:/home/pi# > /var/log/lastlog
 ```
+
+> 相关参考 https://hacpai.com/article/1513672652459 <br>
+> https://www.freebuf.com/articles/system/141474.html
