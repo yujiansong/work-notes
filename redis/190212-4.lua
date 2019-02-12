@@ -15,7 +15,7 @@ end
 
 return result
 
-[[
+--[[
 127.0.0.1:6379> hgetall ages
  1) "laozheng"
  2) "29"
@@ -37,4 +37,4 @@ return result
 C:\Users\yujia>redis-cli --eval D:\practise\190212-4.lua ages , 28
 1) "xiaoming"
 2) "chenzhi"
-]]
+--]]

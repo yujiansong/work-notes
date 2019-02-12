@@ -9,7 +9,7 @@ for m, n in ipairs(args) do
 	end
 end
 return result
-[[
+--[[
 127.0.0.1:6379> smembers players
 1) "zhengbowen"
 2) "yujiansong"
@@ -18,4 +18,4 @@ return result
 5) "ouyanger"
 C:\Users\yujia>redis-cli --eval D:\practise\190212-3.lua players , wanglaoer laozheng abc
 1) "wanglaoer"
-]]
+--]]
