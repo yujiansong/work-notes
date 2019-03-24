@@ -1,6 +1,5 @@
 有时候世界虽然是假的，但并不缺少真心对待我们的人。
 
-<<<<<<< HEAD
 -- 20190323
 没胆的人，赚不到大钱。抗压差的人，也没法东山再起。
 脸皮不厚的，泡不到好看的姑娘。好像很多好东西，都在考验一个人的极限。
@@ -8,7 +7,8 @@
 松松懈懈也只能得到一地鸡毛。
 没什么好东西可以平白无故的摆在眼前，一伸手就碰到，
 不翻山越岭，抗过低谷和平原，就看不到更高的山和美景。
-=======
 The failures and reverses which await men- and one after another sadden the brow of youth- add a dignity to the prospect of human life, which no Arcadian success would do. 
 尽管失败和挫折等待着人们，一次次地夺走青春的容颜，但却给人生的前景增添了一份尊严，这是任何顺利的成功都不能做到的。
->>>>>>> 12cfb20e00420e7313eb8c0165935dbf1b03f8c7
+
+-- 20190324
+我不懂我们是否有着各自的命运，还是只是到处随风飘荡
