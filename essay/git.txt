@@ -89,3 +89,7 @@ git pull --rebase
 git config branch.BRANCH_NAME_HERE.rebase true
 
 
+#190328 git忽略已经被提交的文件
+ringle@DESKTOP-JTPHUSS MINGW64 /e/project/oa.kouling.cn (yujiansong)
+$ git update-index --assume-unchanged .env.development
+
