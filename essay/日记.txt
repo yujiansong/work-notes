@@ -274,3 +274,6 @@ today is so hot!
 
 --20190727
 how to chosen a company?
+
+--20190801
+a new environment, good luck!
